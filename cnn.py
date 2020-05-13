@@ -82,6 +82,7 @@ train_labels = np.concatenate([finalZeros, finalOnes, finalTwos])
 
 print(train_labels)
 
+#def forward(image, label):
 def forward(image, label):
     out = conv.forward((image / 255) - 0.5)
 
@@ -150,76 +151,89 @@ for i, (im, label) in enumerate(zip(train_images, train_labels)):
     loss += l
     num_correct += acc
 
-#Image Capture
-testimgGetter.test_image_getter()
+def test():
+    #Image Capture
+    testimgGetter.test_image_getter()
 
-#Test CNN
-print('\n--- Testing the CNN ---')
-loss = 0
-num_correct = 0
+    #Test CNN
+    print('\n--- Testing the CNN ---')
+    loss = 0
+    num_correct = 0
 
-    #Directories of Bulk Image Testing
-testing_images_dir_a = '/Users/cesaralmendarez/Desktop/DeepASL/test_images/test_images_a_resized'
-testing_images_dir_l = '/Users/cesaralmendarez/Desktop/DeepASL/test_images/test_images_l_resized'
-live_image_testing = '/Users/cesaralmendarez/Desktop/DeepASL/test_images/specific_testing_image'
-test_images_list = []
+        #Directories of Bulk Image Testing
+    testing_images_dir_a = '/Users/cesaralmendarez/Desktop/DeepASL/test_images/test_images_a_resized'
+    testing_images_dir_l = '/Users/cesaralmendarez/Desktop/DeepASL/test_images/test_images_l_resized'
+    live_image_testing = '/Users/cesaralmendarez/Desktop/DeepASL/test_images/specific_testing_image'
+    test_images_list = []
 
-#Iteration Through Testing Image Directory, Resizing, Grayscaling and Appending to List
-for filename in os.listdir(live_image_testing):
-    #Skip Metadata
-    if filename != '.DS_Store':
-        #Read Image
-        readimg = cv2.imread(live_image_testing + '/' + filename)
-        #Resize Image To 28x28
-        resize = cv2.resize(readimg, dsize = (28, 28), interpolation = cv2.INTER_AREA)
-        #Grayscale Image
-        grayscale = cv2.cvtColor(resize, cv2.COLOR_BGR2GRAY)
-        #Append Image to List
-        test_images_list.append(grayscale)
+    #Iteration Through Testing Image Directory, Resizing, Grayscaling and Appending to List
+    for filename in os.listdir(live_image_testing):
+        #Skip Metadata
+        if filename != '.DS_Store':
+            #Read Image
+            readimg = cv2.imread(live_image_testing + '/' + filename)
+            #Resize Image To 28x28
+            resize = cv2.resize(readimg, dsize = (28, 28), interpolation = cv2.INTER_AREA)
+            #Grayscale Image
+            grayscale = cv2.cvtColor(resize, cv2.COLOR_BGR2GRAY)
+            #Append Image to List
+            test_images_list.append(grayscale)
 
-#Convert List into Numpy Array
-test_images = np.array(test_images_list)
+    #Convert List into Numpy Array
+    test_images = np.array(test_images_list)
 
-#Test Labels
-#0 = a, 1 = l
-zeros = np.full((1, 250), 0)
-ones = np.full((1, 250), 1)
-finalZeros = zeros.ravel()
-finalOnes = ones.ravel()
+    #Test Labels
+    #0 = a, 1 = l
+    zeros = np.full((1, 250), 0)
+    ones = np.full((1, 250), 1)
+    finalZeros = zeros.ravel()
+    finalOnes = ones.ravel()
 
-#Prompt For Label
-label = input('Enter Label for the Image...')
+    #Prompt For Label
+    label = input('Enter Label for the Image...')
 
-#Convertion of Input Into Readable Data
-if label == 'a':
-    label = 0
-elif label == 'l':
-    label = 1
-elif label == 'b':
-    label = 2
+    #Convertion of Input Into Readable Data
+    if label == 'a':
+        label = 0
+    elif label == 'l':
+        label = 1
+    elif label == 'b':
+        label = 2
 
-#Insertion of Label Into 1D Numpy Array
-zeros = np.full((1, 1), label)
-ones = np.full((0, 0), 1)
-finalZeros = zeros.ravel()
-finalOnes = ones.ravel()
+    #Insertion of Label Into 1D Numpy Array
+    zeros = np.full((1, 1), label)
+    ones = np.full((0, 0), 1)
+    finalZeros = zeros.ravel()
+    finalOnes = ones.ravel()
 
-test_labels = np.concatenate([finalZeros, finalOnes])
+    test_labels = np.concatenate([finalZeros, finalOnes])
 
-for im, label in zip(test_images, test_labels):
-    _, l, acc = forward(im, label)
-    loss += 1
-    num_correct += acc
+    for im, label in zip(test_images, test_labels):
+        _, l, acc = forward(im, label)
+        loss += 1
+        num_correct += acc
 
-num_tests = len(test_images)
-print('Test Loss: ', loss / num_tests)
-print('Test Accuracy: ', num_correct / num_tests)
-print('Number of Tests:')
-print(num_tests)
-print('Number of Correct Predictions:')
-print(num_correct)
+    print('Deleting Previous Test Image...')
 
-print('Deleting Previous Test Image...')
+    for toBeRemoved in os.listdir(live_image_testing):
+        os.remove(live_image_testing + '/' + toBeRemoved)
+'''
+    num_tests = len(test_images)
+    print('Test Loss: ', loss / num_tests)
+    print('Test Accuracy: ', num_correct / num_tests)
+    print('Number of Tests:')
+    print(num_tests)
+    print('Number of Correct Predictions:')
+    print(num_correct)
+'''
 
-for toBeRemovedFile in os.listdir(live_image_testing):
-    os.remove(live_image_testing + '/' + toBeRemovedFile)
+while(True):
+
+    test()
+
+    testAgain = input('Do you want to test another gesture?')
+
+    if testAgain == 'y':
+        continue
+    elif testAgain == 'n':
+        break
