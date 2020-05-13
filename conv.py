@@ -52,4 +52,5 @@ class Conv3x3:
 
             self.filters -= learn_rate * d_L_d_filters
 
-            return
+            #added none
+            return None

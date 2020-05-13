@@ -1,19 +1,17 @@
 import numpy as np
 import cv2
+import os
+from os.path import isfile, join
+from os import listdir, makedirs
 
 class DataGetter:
 
     def image_taker():
-        directory = input('what directory do you want to write to...')
-
-        if directory == 'l':
-            directory = 'l'
-        elif directory == 'a':
-            directory = 'a'
-
         capture = cv2.VideoCapture(0)
 
-        img_taken_counter = 250
+        img_taken_counter = 1000
+
+        directory = input('what directory do you want to write to...')
 
         while True:
             _, frame = capture.read()
@@ -50,4 +48,11 @@ class DataGetter:
                 img_taken_counter += 1
 
         capture.release()
+
         cv2.destroyAllWindows()
+
+    def createNewGestureRepo(newLetter):
+        newpath = '/Users/cesaralmendarez/Desktop/DeepASL/train_images/train_images_{}_2'.format(newLetter)
+
+        if not os.path.exists(newpath):
+            os.makedirs(newpath)
