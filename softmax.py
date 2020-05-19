@@ -1,6 +1,5 @@
 import numpy as np
 
-
 class Softmax:
     # A standard fully-connected layer with softmax activation.
 

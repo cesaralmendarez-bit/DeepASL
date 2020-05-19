@@ -9,7 +9,9 @@ class DataGetter:
     def image_taker():
         capture = cv2.VideoCapture(0)
 
-        img_taken_counter = 1000
+        currentImages = input('On what image do you want to start on?')
+
+        img_taken_counter = int(currentImages)
 
         directory = input('what directory do you want to write to...')
 
