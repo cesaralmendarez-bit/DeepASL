@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 from  AppKit import NSSpeechSynthesizer
 import time
 import sys
