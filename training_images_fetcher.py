@@ -41,6 +41,7 @@ class DataGetter:
                 break
 
             elif key%256 == 32:
+
                 image_destination = '/Users/cesaralmendarez/Desktop/DeepASL/train_images/train_images_{}_2/opencv_frame_{}.png'.format(directory, img_taken_counter)
 
                 cv2.imwrite(image_destination, maskROI)

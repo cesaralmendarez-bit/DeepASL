@@ -35,8 +35,8 @@ class MaxPool2:
 
   def backprop(self, d_L_d_out):
     '''
-    Performs a backward pass of the maxpool layer.
-    Returns the loss gradient for this layer's inputs.
+    Backwards Pass Of MaxPool Layer
+    Returns This Layers Loss Gradient
     - d_L_d_out is the loss gradient for this layer's outputs.
     '''
     d_L_d_input = np.zeros(self.last_input.shape)
@@ -48,7 +48,7 @@ class MaxPool2:
       for i2 in range(h):
         for j2 in range(w):
           for f2 in range(f):
-            # If this pixel was the max value, copy the gradient to it.
+            #Max Value Gets Gradient
             if im_region[i2, j2, f2] == amax[f2]:
               d_L_d_input[i * 2 + i2, j * 2 + j2, f2] = d_L_d_out[i, j, f2]
 
